@@ -15,7 +15,7 @@
 
 ```
 src/
-  core/        领域逻辑（Markdown 解析、X 适配，自 @yt2x/core 内联）
+  core/        领域逻辑（Markdown 解析、X 适配，自原 monorepo core 包内联）
   ui/          导入对话框、加载态、按钮样式（原生 DOM）
   services/    扩展运行时抽象（chrome.storage / localStorage）
   utils/       深度 DOM 查询、MAIN world 消息常量
