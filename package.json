@@ -1,0 +1,25 @@
+{
+  "name": "mts-x-article-import",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Standalone Chrome MV3 extension to import Markdown into X Articles draft editor. 将本地 Markdown 导入 X Articles 草稿编辑器（独立项目）。",
+  "scripts": {
+    "build": "node ./build.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:smoke": "vitest run tests/smoke.test.ts && node ./scripts/dist-smoke.mjs",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "mermaid": "^11.6.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.304",
+    "esbuild": "^0.25.0",
+    "jsdom": "^26.0.0",
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.0"
+  }
+}
