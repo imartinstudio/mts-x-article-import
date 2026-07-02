@@ -24,7 +24,7 @@
     "noEmit": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "types": ["chrome"]
+    "types": ["chrome", "node"]
   },
   "include": ["src/**/*", "tests/**/*"]
 }
