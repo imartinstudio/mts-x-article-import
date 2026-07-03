@@ -31,8 +31,8 @@ describe("adaptArticleForX", () => {
       subscriptionTier: "premium",
     });
 
-    expect(adapted.markdown).toContain("![Table](yt2x-table-1.png)");
-    expect(adapted.markdown).toContain("Mermaid diagram requires image conversion");
+    expect(adapted.markdown).toContain("![表格](yt2x-table-1.png)");
+    expect(adapted.markdown).toContain("Mermaid 图表需转换为图片后再发布");
     expect(adapted.adaptations).toContainEqual(
       expect.objectContaining({
         kind: "premium-table",
@@ -48,6 +48,6 @@ describe("adaptArticleForX", () => {
       subscriptionTier: "premium",
     });
 
-    expect(adapted.warnings).toEqual(["Images inside Markdown lists need manual review before X Articles insertion."]);
+    expect(adapted.warnings).toEqual(["Markdown 列表中的图片需人工确认后再插入 X Articles。"]);
   });
 });

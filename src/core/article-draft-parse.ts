@@ -173,6 +173,25 @@ const isUnusableTitleLine = (line: string): boolean => {
   return false;
 };
 
+/** 集数后缀，如「标题｜2/5」「标题 | 2/5」。 */
+const TITLE_EPISODE_SUFFIX_RE = /\s*[|｜]\s*\d+\s*[/／]\s*\d+\s*$/u;
+/** 键帽序列（如 1️⃣）需整体移除，避免残留裸数字之外的组合字符。 */
+const KEYCAP_SEQUENCE_RE = /[0-9#*]\u{FE0F}?\u{20E3}/gu;
+const EMOJI_RE =
+  /[\p{Extended_Pictographic}\u{1F1E6}-\u{1F1FF}\u{FE0E}\u{FE0F}\u{200D}\u{20E3}\u{E0020}-\u{E007F}]/gu;
+
+const FALLBACK_TITLE = "未命名";
+
+export const sanitizeArticleTitle = (title: string): string => {
+  const cleaned = title
+    .replace(TITLE_EPISODE_SUFFIX_RE, "")
+    .replace(KEYCAP_SEQUENCE_RE, "")
+    .replace(EMOJI_RE, "")
+    .replace(/\s{2,}/gu, " ")
+    .trim();
+  return cleaned.length > 0 ? cleaned : FALLBACK_TITLE;
+};
+
 export const extractArticleTitle = (
   markdown: string,
   options: { preserveSourceContent?: boolean } = {},
@@ -187,7 +206,7 @@ export const extractArticleTitle = (
     const bodyLines = [...lines];
     bodyLines.splice(index, 1);
     return {
-      title: stripInlineMarkdown(h1[1]!),
+      title: sanitizeArticleTitle(stripInlineMarkdown(h1[1]!)),
       body: prepareBody(bodyLines.join("\n")),
     };
   }
@@ -198,7 +217,7 @@ export const extractArticleTitle = (
     const candidate = stripInlineMarkdown(h2[1]!);
     if (isUnusableTitleLine(candidate)) continue;
     return {
-      title: candidate.slice(0, 100),
+      title: sanitizeArticleTitle(candidate).slice(0, 100),
       body: prepareBody(lines.join("\n")),
     };
   }
@@ -207,12 +226,12 @@ export const extractArticleTitle = (
     const line = lines[index]!.trim();
     if (isUnusableTitleLine(line)) continue;
     return {
-      title: stripInlineMarkdown(line).slice(0, 100),
+      title: sanitizeArticleTitle(stripInlineMarkdown(line)).slice(0, 100),
       body: prepareBody(lines.join("\n")),
     };
   }
 
-  return { title: "Untitled", body: prepareBody(lines.join("\n")) };
+  return { title: FALLBACK_TITLE, body: prepareBody(lines.join("\n")) };
 };
 
 export const isEnglishOnlyMarkdownBlock = (source: string): boolean => {

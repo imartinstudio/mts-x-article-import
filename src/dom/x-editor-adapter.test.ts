@@ -208,7 +208,7 @@ describe("writeArticleDraftToPage", () => {
             index: 1,
             marker: "__YT2X_test_IMAGE_0__",
             source: "yt2x-table-1.png",
-            error: "Image placeholder was not found in the X editor",
+            error: "图片占位符未在 X 编辑器中找到",
           },
         ],
         markersCleaned: 0,

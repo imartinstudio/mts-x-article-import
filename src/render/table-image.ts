@@ -102,7 +102,7 @@ const calculateColumnWidths = (
 const createMeasureContext = (): CanvasRenderingContext2D => {
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
-  if (ctx === null) throw new Error("Canvas 2D context was unavailable for table PNG export.");
+  if (ctx === null) throw new Error("无法获取 Canvas 2D 上下文，表格转 PNG 失败。");
   ctx.font = `${FONT_SIZE}px ${FONT_FAMILY}`;
   return ctx;
 };
@@ -180,13 +180,13 @@ export const renderTableMarkdownToPngBlob = async (markdown: string): Promise<Bl
   canvas.width = Math.ceil(layout.width * scale);
   canvas.height = Math.ceil(layout.height * scale);
   const ctx = canvas.getContext("2d");
-  if (ctx === null) throw new Error("Canvas 2D context was unavailable for table PNG export.");
+  if (ctx === null) throw new Error("无法获取 Canvas 2D 上下文，表格转 PNG 失败。");
   ctx.scale(scale, scale);
   drawTable(ctx, layout);
 
   return await new Promise<Blob>((resolve, reject) => {
     canvas.toBlob((result) => {
-      if (result === null) reject(new Error("Table PNG conversion failed."));
+      if (result === null) reject(new Error("表格转 PNG 失败。"));
       else resolve(result);
     }, "image/png");
   });

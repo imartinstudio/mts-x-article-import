@@ -61,7 +61,7 @@ export const readFileAsText = (file: File): Promise<string> =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => resolve(String(reader.result ?? ""));
-    reader.onerror = () => reject(reader.error ?? new Error("Failed to read Markdown file."));
+    reader.onerror = () => reject(reader.error ?? new Error("读取 Markdown 文件失败。"));
     reader.readAsText(file);
   });
 
@@ -106,7 +106,7 @@ const pickFiles = (input: {
     inputEl.addEventListener("cancel", () => finish([]), { once: true });
     if (!hasUserActivation()) {
       inputEl.remove();
-      reject(new Error("File selection must be started from a direct click. Please use the import dialog's picker button."));
+      reject(new Error("文件选择必须由用户点击直接触发，请使用导入对话框中的选择按钮。"));
       return;
     }
     inputEl.click();

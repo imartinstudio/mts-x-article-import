@@ -36,13 +36,13 @@ const materializeMermaidBlocks = async (
   for (const match of matches) {
     const source = match[1]?.trim() ?? "";
     if (source.length === 0) {
-      throw new Error("Mermaid block was empty and cannot be converted.");
+      throw new Error("Mermaid 代码块为空，无法转换为图片。");
     }
     index += 1;
     const placeholder = `yt2x-mermaid-${index}.png`;
     const blob = await renderMermaidToPngBlob(source);
     generatedBlobs.set(placeholder, blob);
-    output = output.replace(match[0]!, `![Mermaid diagram](${placeholder})`);
+    output = output.replace(match[0]!, `![Mermaid 图表](${placeholder})`);
   }
   return output;
 };
@@ -77,7 +77,7 @@ export const prepareArticleImport = async (input: {
           (source) => input.mediaRegistry.resolveMediaPath(source) === parseResult.coverImage,
         );
   if (missingCoverSources.length > 0) {
-    throw new Error(`Missing authorized cover media: ${missingCoverSources.join(", ")}`);
+    throw new Error(`封面图片缺失或未授权：${missingCoverSources.join("、")}`);
   }
 
   return {

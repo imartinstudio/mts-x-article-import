@@ -77,7 +77,7 @@
 
   const throwIfCancelled = (): void => {
     if (!cancelRequested) return;
-    const error = new Error("Import stopped by user.");
+    const error = new Error("导入已被用户停止。");
     (error as Error & { cancelled?: boolean }).cancelled = true;
     throw error;
   };
@@ -90,7 +90,7 @@
     return new Promise((resolve, reject) => {
       const timeout = window.setTimeout(() => {
         window.removeEventListener("message", listener);
-        reject(new Error("Prepared image data did not arrive"));
+        reject(new Error("图片数据准备超时，未能送达"));
       }, timeoutMs);
       const listener = (event: MessageEvent): void => {
         if (event.source !== window) return;
@@ -101,7 +101,7 @@
         window.clearTimeout(timeout);
         window.removeEventListener("message", listener);
         if (message.file?.base64) resolve(message.file);
-        else reject(new Error(message.error || "Prepared image data was not available"));
+        else reject(new Error(message.error || "图片数据准备失败"));
       };
       window.addEventListener("message", listener);
       post("file-request", { requestId, token, marker: operation.marker });
@@ -239,7 +239,7 @@
     ({ Bold: "BOLD", Italic: "ITALIC", Strikethrough: "STRIKETHROUGH", Code: "CODE" })[style] || style;
 
   const writeDraftBlocks = (draftNode: any, blocks: WritePayload["blocks"]): { ok: boolean; error?: string } => {
-    if (!Array.isArray(blocks) || blocks.length === 0) return { ok: false, error: "No structured blocks" };
+    if (!Array.isArray(blocks) || blocks.length === 0) return { ok: false, error: "没有可写入的结构化内容块" };
 
     const editorState = draftNode.props.editorState;
     const EditorState = editorState.constructor;
@@ -250,7 +250,7 @@
     const sampleBlock = sample?.block || null;
     const sampleCharacter = sample?.character || null;
     if (!sampleBlock || !sampleCharacter) {
-      return { ok: false, error: "No Draft.js character sample for structured write" };
+      return { ok: false, error: "未能获取 Draft.js 字符样本，无法结构化写入" };
     }
 
     const BlockMap = blockMap.constructor;
@@ -306,7 +306,7 @@
       createdKeys.push(key);
     }
 
-    if (createdKeys.length === 0) return { ok: false, error: "No Draft.js blocks created" };
+    if (createdKeys.length === 0) return { ok: false, error: "未能创建 Draft.js 内容块" };
     const lastKey = createdKeys[createdKeys.length - 1]!;
     const selection = SelectionState.createEmpty(lastKey);
     const nextState = nextContent
@@ -373,7 +373,7 @@
     sampleBlock: any,
   ): { ok: boolean; error?: string; contentState?: any } => {
     const blockKey = findMarkerLocation(contentState, marker, true)?.blockKey;
-    if (!blockKey) return { ok: false, error: `Marker not found: ${marker}` };
+    if (!blockKey) return { ok: false, error: `未找到导入标记：${marker}` };
 
     const markerBlock = contentState.getBlockMap().get(blockKey);
     const blockTemplate = markerBlock || sampleBlock;
@@ -382,7 +382,7 @@
     const fallbackCharacter = firstCharacterMetadata(sampleBlock, false);
     const sampleCharacter = markerCharacter?.set ? markerCharacter : fallbackCharacter;
     if (!sampleCharacter?.set) {
-      return { ok: false, error: `No Draft.js character sample for marker: ${marker}` };
+      return { ok: false, error: `未能获取标记对应的 Draft.js 字符样本：${marker}` };
     }
     const CharacterList = characterList.constructor;
     const withEntity = contentState.createEntity(entityType, mutability || "IMMUTABLE", data || {});
@@ -422,7 +422,7 @@
         contentState = result.contentState;
         okCount += 1;
       } else {
-        errors.push(result.error || "Atomic insert failed");
+        errors.push(result.error || "特殊块插入失败");
       }
     }
 
@@ -579,7 +579,7 @@
     if (!onFilesAdded) return { ok: false, error: "X upload handler was not reachable" };
 
     const markerLocation = placeSelectionAtMarker(draftNode, imageOperation.marker);
-    if (!markerLocation) return { ok: false, error: "Image placeholder was not found in the X editor" };
+    if (!markerLocation) return { ok: false, error: "图片占位符未在 X 编辑器中找到" };
     await sleep(80);
 
     const before = existingMediaEntities(draftNode.props.editorState.getCurrentContent());
@@ -609,8 +609,8 @@
         if (index && total) {
           progress(
             pendingUpload
-              ? `Uploading image ${index}/${total}... waiting for X to finish.`
-              : `Uploading image ${index}/${total}...`,
+              ? `正在上传图片 ${index}/${total}…等待 X 完成处理。`
+              : `正在上传图片 ${index}/${total}…`,
           );
         }
         nextProgressAt = Date.now() + MEDIA_UPLOAD_PROGRESS_HEARTBEAT_MS;
@@ -847,7 +847,7 @@
     }
 
     let draftNode = findDraftStateNode();
-    if (!draftNode) throw new Error("X Draft.js editor was not reachable");
+    if (!draftNode) throw new Error("未能访问 X 的 Draft.js 编辑器");
 
     const summary = {
       atomicOk: 0,
@@ -860,7 +860,7 @@
     };
 
     throwIfCancelled();
-    progress("Writing structured Markdown into the X Articles editor...");
+    progress("正在将 Markdown 结构化写入 X Articles 编辑器…");
     draftNode = await ensureDraftCharacterSample(draftNode);
     throwIfCancelled();
 
@@ -871,7 +871,7 @@
     }
 
     draftNode = (await waitForDraftMarkers(payload.markerPrefix, payload.plan.length)) || draftNode;
-    if (!draftNode) throw new Error("X Draft.js editor was not reachable after writing Markdown");
+    if (!draftNode) throw new Error("写入 Markdown 后未能访问 X 的 Draft.js 编辑器");
     await sleep(150);
 
     const atomicOps = payload.plan.filter((item) => item.op.type === "atomic");
@@ -879,7 +879,7 @@
 
     if (atomicOps.length > 0) {
       throwIfCancelled();
-      progress(`Inserting ${atomicOps.length} special block(s)...`);
+      progress(`正在插入 ${atomicOps.length} 个特殊块…`);
       draftNode = findDraftStateNode() || draftNode;
       const result = insertAtomicBatch(draftNode, atomicOps);
       summary.atomicOk = result.okCount;
@@ -903,7 +903,7 @@
       throwIfCancelled();
       draftNode = findDraftStateNode() || draftNode;
       const op = imageOps[index]!;
-      progress(`Uploading image ${index + 1}/${imageOps.length}...`);
+      progress(`正在上传图片 ${index + 1}/${imageOps.length}…`);
       const result = await uploadImageAtMarker(draftNode, op, protectedAtomicBlocks, {
         index: index + 1,
         total: imageOps.length,
@@ -926,7 +926,7 @@
           index: index + 1,
           marker: op.marker,
           source: op.op.source || null,
-          error: result.error || "Image upload failed",
+          error: result.error || "图片上传失败",
         });
         replaceMarkerText(draftNode, op.marker, op.op.fallbackText || "[image upload failed]");
       }
@@ -935,7 +935,7 @@
 
     if (uploads.length > 0) {
       throwIfCancelled();
-      progress("Reordering uploaded images into document positions...");
+      progress("正在将已上传图片调整到文档对应位置…");
       await sleep(900);
       draftNode = findDraftStateNode() || draftNode;
       const relocateResult = relocateImages(draftNode, uploads, protectedAtomicBlocks);
@@ -946,7 +946,7 @@
       await sleep(400);
     }
 
-    progress("Cleaning up import markers...");
+    progress("正在清理导入标记…");
     draftNode = findDraftStateNode() || draftNode;
     summary.markersCleaned = cleanupMarkers(draftNode, payload.markerPrefix);
     kickRender(draftNode);
@@ -967,13 +967,13 @@
 
     if (message.kind === "run") {
       if (!message.payload) {
-        post("error", { error: "Missing MAIN world import payload." });
+        post("error", { error: "缺少 MAIN world 导入数据。" });
         return;
       }
       void runFlow(message.payload).catch((error: Error & { cancelled?: boolean }) => {
         console.error(LOG, error);
         if (error?.cancelled) {
-          post("cancelled", { reason: error.message || "Import stopped by user." });
+          post("cancelled", { reason: error.message || "导入已被用户停止。" });
           return;
         }
         post("error", { error: error?.message || String(error), stack: error?.stack || null });
@@ -983,7 +983,7 @@
 
     if (message.kind === "cancel") {
       cancelRequested = true;
-      progress("Import stopped by user.", "warn");
+      progress("导入已被用户停止。", "warn");
     }
   });
 

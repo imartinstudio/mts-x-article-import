@@ -345,7 +345,7 @@ export const findTitleField = (): HTMLElement => {
     )[0]!;
   }
 
-  throw new Error("X Articles title field was not found.");
+  throw new Error("未找到 X Articles 标题输入框。");
 };
 
 export const pickArticleBodyEditor = (): HTMLElement => {
@@ -358,7 +358,7 @@ export const pickArticleBodyEditor = (): HTMLElement => {
 
   const editors = articleEditors();
   if (editors.length === 0) {
-    throw new Error("X Articles editor was not found on this page.");
+    throw new Error("当前页面未找到 X Articles 编辑器。");
   }
   if (editors.length === 1) return editors[0]!;
 
