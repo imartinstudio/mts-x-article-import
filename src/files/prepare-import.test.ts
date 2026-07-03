@@ -81,7 +81,7 @@ describe("prepareArticleImport", () => {
         subscriptionTier: "premium",
         mediaRegistry,
       }),
-    ).rejects.toThrow("封面图片缺失或未授权：images/cover.png");
+    ).rejects.toThrow("Missing authorized cover media: images/cover.png");
   });
 
   it("resolves generated blobs before falling back to local media", () => {

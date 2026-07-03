@@ -113,7 +113,7 @@ export const uploadCoverImage = async (file: File): Promise<void> => {
   }
 
   if (input === null) {
-    throw new Error("封面区域未找到 X Articles 封面上传控件。");
+    throw new Error("X Articles cover upload control was not found in the cover hero area.");
   }
 
   await assignFileToInput(input, file);

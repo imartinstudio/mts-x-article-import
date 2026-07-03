@@ -25,12 +25,12 @@ export const renderMermaidToPngBlob = async (source: string): Promise<Blob> => {
     canvas.width = Math.ceil(image.naturalWidth * scale);
     canvas.height = Math.ceil(image.naturalHeight * scale);
     const ctx = canvas.getContext("2d");
-    if (ctx === null) throw new Error("无法获取 Canvas 2D 上下文，Mermaid 图表转 PNG 失败。");
+    if (ctx === null) throw new Error("Canvas 2D context was unavailable for Mermaid PNG export.");
     ctx.scale(scale, scale);
     ctx.drawImage(image, 0, 0);
     return await new Promise<Blob>((resolve, reject) => {
       canvas.toBlob((result) => {
-        if (result === null) reject(new Error("Mermaid 图表转 PNG 失败。"));
+        if (result === null) reject(new Error("Mermaid PNG conversion failed."));
         else resolve(result);
       }, "image/png");
     });
@@ -43,6 +43,6 @@ const loadImage = (url: string): Promise<HTMLImageElement> =>
   new Promise((resolve, reject) => {
     const image = new Image();
     image.onload = () => resolve(image);
-    image.onerror = () => reject(new Error("加载已渲染的 Mermaid 图表失败。"));
+    image.onerror = () => reject(new Error("Failed to load rendered Mermaid diagram."));
     image.src = url;
   });

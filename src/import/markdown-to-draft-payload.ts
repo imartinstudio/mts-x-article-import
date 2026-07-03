@@ -292,13 +292,13 @@ const fileToBase64 = async (file: File): Promise<string> =>
     reader.onload = () => {
       const result = reader.result;
       if (typeof result !== "string") {
-        reject(new Error(`读取文件 ${file.name} 失败，无法导入 X Articles。`));
+        reject(new Error(`Failed to read ${file.name} for X Articles import.`));
         return;
       }
       const comma = result.indexOf(",");
       resolve(comma >= 0 ? result.slice(comma + 1) : result);
     };
-    reader.onerror = () => reject(reader.error ?? new Error(`读取文件 ${file.name} 失败。`));
+    reader.onerror = () => reject(reader.error ?? new Error(`Failed to read ${file.name}.`));
     reader.readAsDataURL(file);
   });
 

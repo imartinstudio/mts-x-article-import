@@ -193,9 +193,9 @@ const handleImportClick = async (mode: ImportMode): Promise<void> => {
       const h3 = (md.match(/^#{3}\s*[^#\n]+$/gm) ?? []).length;
       if (h3 > 0) stats.push({ label: "H3", count: h3 });
       const code = (md.match(/```[\s\S]*?```/g) ?? []).length;
-      if (code > 0) stats.push({ label: "代码块", count: code });
+      if (code > 0) stats.push({ label: "Code block", count: code });
       const table = (md.match(/^\|.+\|/gm) ?? []).length;
-      if (table > 0) stats.push({ label: "表格行", count: table });
+      if (table > 0) stats.push({ label: "Table row", count: table });
       return stats;
     };
 

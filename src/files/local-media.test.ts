@@ -46,7 +46,7 @@ describe("pickMarkdownFile", () => {
     });
     const click = vi.spyOn(HTMLInputElement.prototype, "click");
 
-    await expect(pickMarkdownFile()).rejects.toThrow(/用户点击直接触发/);
+    await expect(pickMarkdownFile()).rejects.toThrow(/direct click/i);
     expect(click).not.toHaveBeenCalled();
     expect(document.querySelectorAll('input[type="file"]')).toHaveLength(0);
   });

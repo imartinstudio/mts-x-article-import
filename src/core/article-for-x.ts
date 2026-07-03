@@ -39,11 +39,11 @@ export const adaptArticleForX = (input: {
       const placeholder = `yt2x-table-${tableNumber}.png`;
       adaptations.push({
         kind: "premium-table",
-        message: "已将 Markdown 表格转换为图片（X Premium 不支持文章内原生表格）。",
+        message: "Converted a Markdown table to an image because X Premium does not support native article tables.",
         placeholder,
         sourceMarkdown: tableLines.join("\n"),
       });
-      output.push(`![表格](${placeholder})`);
+      output.push(`![Table](${placeholder})`);
     }
     tableLines = [];
   };
@@ -58,10 +58,10 @@ export const adaptArticleForX = (input: {
         if (inMermaid) {
           adaptations.push({
             kind: "mermaid",
-            message: "已将 Mermaid 图表替换为待处理提示（X Articles 无法直接粘贴 Mermaid）。",
+            message: "Replaced a Mermaid block with a review note because X Articles cannot paste Mermaid.",
           });
-          warnings.push("Mermaid 图表需先转换为图片，再复核最终 X Article 草稿。");
-          output.push("> Mermaid 图表需转换为图片后再发布。");
+          warnings.push("Mermaid blocks need image conversion before the final X Article draft is reviewed.");
+          output.push("> Mermaid diagram requires image conversion before publishing.");
         } else {
           output.push(line);
         }
@@ -80,7 +80,7 @@ export const adaptArticleForX = (input: {
     }
 
     if (/^\s*(?:[-*]|\d+\.)\s+.*!\[[^\]]*\]\([^)]+\)/u.test(line)) {
-      warnings.push("Markdown 列表中的图片需人工确认后再插入 X Articles。");
+      warnings.push("Images inside Markdown lists need manual review before X Articles insertion.");
     }
 
     if (isMarkdownTableLine(line)) {
@@ -94,7 +94,7 @@ export const adaptArticleForX = (input: {
       output.push(`**${stripOuterEmphasis(heading[2]!.trim())}**`);
       adaptations.push({
         kind: "deep-heading",
-        message: "已将 H3 及更深层级标题转换为加粗文本（X Premium 不支持深层标题）。",
+        message: "Flattened an H3+ heading for X Premium.",
       });
       continue;
     }

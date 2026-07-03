@@ -215,7 +215,7 @@ const openGenericInsertMenu = async (): Promise<void> => {
   articleEditor().focus();
   insert.click();
   if (!(await waitForInsertMenu(4_000))) {
-    throw new Error("X Articles 插入菜单未能打开。");
+    throw new Error("X Articles insert menu did not open.");
   }
 };
 
@@ -240,7 +240,7 @@ const clickMenuItem = async (pattern: RegExp, label: string): Promise<void> => {
   }
   const item = findMenuItemByName(pattern);
   if (item === null) {
-    throw new Error(`未找到 X Articles 的「${label}」菜单项。`);
+    throw new Error(`X Articles ${label} menu item was not found.`);
   }
   item.click();
   await wait(200);
@@ -496,13 +496,13 @@ const openContentMediaUploadSurface = async (): Promise<void> => {
   await openGenericInsertMenu();
   const mediaItem = findMenuItemByName(LOCALE_PATTERNS.mediaMenu);
   if (mediaItem === null) {
-    throw new Error("未找到 X Articles 的媒体菜单项。");
+    throw new Error("X Articles media menu item was not found.");
   }
   mediaItem.click();
   await wait(450);
 
   if (!isContentMediaUploadDialogOpen() && latestVisibleDialog() === null && findDeepFileInput() === null) {
-    throw new Error("X Articles 内容媒体上传对话框未能打开。");
+    throw new Error("X Articles content media upload dialog did not open.");
   }
 };
 
@@ -557,7 +557,7 @@ const finishContentMediaUpload = async (
     if (await waitForEditorMediaChange(editor, before, 4_000)) return;
   }
 
-  throw new Error("内容媒体未能插入 X Articles 编辑器正文。");
+  throw new Error("X Articles content media was not inserted into the editor body.");
 };
 
 const listDialogFileInputs = (dialog: HTMLElement): HTMLInputElement[] =>
@@ -602,7 +602,7 @@ export const uploadFileThroughSurface = async (dialog: HTMLElement | null, file:
   }
 
   if (inputs.length === 0) {
-    throw new Error("打开「Add media content」后未找到上传控件。");
+    throw new Error("X Articles content media upload control was not found after opening Add media content.");
   }
 
   for (const input of inputs) {
@@ -611,7 +611,7 @@ export const uploadFileThroughSurface = async (dialog: HTMLElement | null, file:
     if (dialog === null || (await waitForDialogUploadPreview(dialog, 12_000))) return;
   }
 
-  throw new Error("X Articles 未在上传对话框中接受该媒体文件。");
+  throw new Error("X Articles did not accept the media file in the upload dialog.");
 };
 
 const uploadFileThroughMediaAction = async (file: File): Promise<boolean> => {
@@ -674,7 +674,7 @@ export const insertContentMedia = async (file: File, anchor: InsertionAnchor): P
     if (dialog !== null) {
       await finishContentMediaUpload(anchor, dialog);
     } else if (!(await waitForEditorMediaChange(editor, before, 8_000))) {
-      throw new Error("X Articles 已接受媒体文件，但未插入编辑器正文。");
+      throw new Error("X Articles accepted the media file but did not insert it into the editor body.");
     }
     dismissOpenOverlays();
     return;
@@ -706,7 +706,7 @@ export const insertContentMedia = async (file: File, anchor: InsertionAnchor): P
   } else {
     await waitForMediaUploadComplete(30_000);
     if (!(await waitForEditorMediaChange(editor, before, 6_000))) {
-      throw new Error("内容媒体未能插入 X Articles 编辑器正文。");
+      throw new Error("X Articles content media was not inserted into the editor body.");
     }
   }
 

@@ -86,7 +86,7 @@ export const writeArticleDraftToPage = async (
     });
 
     for (const imageError of result.summary.imageErrors) {
-      if (/图片占位符未在 X 编辑器中找到|placeholder was not found/iu.test(imageError.error)) {
+      if (/placeholder was not found/iu.test(imageError.error)) {
         if (imageError.source !== null) manualContentMedia.push(imageError.source);
         continue;
       }
@@ -96,7 +96,7 @@ export const writeArticleDraftToPage = async (
 
     await fillTitle(parseResult.title);
     if (!editorHasMeaningfulContent(editor)) {
-      throw new Error("导入结束前正文未完成写入。");
+      throw new Error("X Articles body did not finish writing before import completed.");
     }
 
     if (filteredVideos.length > 0) {
@@ -185,10 +185,10 @@ const fillTitle = async (title: string): Promise<void> => {
 
   selectAllIn(field);
   if (!document.execCommand("insertText", false, title)) {
-    throw new Error("X Articles 标题编辑器未接受输入内容。");
+    throw new Error("X Articles title editor did not accept typed content.");
   }
   await wait(120);
   if (!titleLooksWritten(title, field)) {
-    throw new Error("X Articles 标题编辑器未保留输入内容。");
+    throw new Error("X Articles title editor did not retain typed content.");
   }
 };
