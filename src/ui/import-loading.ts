@@ -1,3 +1,5 @@
+import { getImportUiTheme } from "./import-theme.js";
+
 export const IMPORT_BUTTON_IDS = {
   icon: "mts-import-markdown-icon-btn",
   text: "mts-import-markdown-text-btn",
@@ -34,6 +36,7 @@ export const showImportLoading = (message: string): ImportLoadingHandle => {
   const host = document.createElement("div");
   host.setAttribute(LOADING_HOST_ATTR, "true");
   const shadow = host.attachShadow({ mode: "open" });
+  const c = getImportUiTheme();
   shadow.innerHTML = `
 <style>
   :host { all: initial; }
@@ -43,29 +46,36 @@ export const showImportLoading = (message: string): ImportLoadingHandle => {
     z-index: 2147483647;
     display: grid;
     place-items: center;
-    background: rgba(0, 0, 0, 0.42);
-    font: 14px/1.5 system-ui, -apple-system, sans-serif;
-    color: #111;
+    background: ${c.backdrop};
+    font: ${c.font};
+    color: ${c.text};
     pointer-events: auto;
     user-select: none;
+    animation: yt-fade 150ms ease-out;
   }
   .panel {
-    min-width: min(360px, calc(100vw - 48px));
-    max-width: calc(100vw - 48px);
-    padding: 20px 22px;
-    border-radius: 12px;
-    background: #fff;
-    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.24);
+    width: min(360px, calc(100vw - 32px));
+    padding: 24px 28px 22px;
+    border-radius: 14px;
+    border: 1px solid ${c.border};
+    background: ${c.bg};
+    box-shadow: 0 16px 48px ${c.shadow};
     text-align: center;
+    animation: yt-enter 200ms cubic-bezier(0.22,1,0.36,1);
   }
   .spinner {
     width: 28px;
     height: 28px;
     margin: 0 auto 14px;
-    border: 3px solid #e5e7eb;
-    border-top-color: #111;
+    border: 3px solid ${c.surface};
+    border-top-color: ${c.accent};
     border-radius: 50%;
     animation: mts-spin 0.8s linear infinite;
+  }
+  @keyframes yt-fade { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes yt-enter {
+    from { opacity: 0; transform: scale(0.95) translateY(10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
   }
   @keyframes mts-spin {
     to { transform: rotate(360deg); }
@@ -74,12 +84,12 @@ export const showImportLoading = (message: string): ImportLoadingHandle => {
     margin: 0;
     font-size: 15px;
     font-weight: 600;
-    color: #0f1419;
+    color: ${c.text};
   }
   .hint {
     margin: 10px 0 0;
     font-size: 13px;
-    color: #536471;
+    color: ${c.muted};
   }
 </style>
 <div class="backdrop" role="alertdialog" aria-modal="true" aria-busy="true" aria-live="polite">

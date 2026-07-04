@@ -6,6 +6,7 @@ import {
 } from "../core/index.js";
 import type { MediaRegistry } from "../files/local-media.js";
 import type { PreparedArticleImport } from "../files/prepare-import.js";
+import { getImportUiTheme, isDarkMode } from "./import-theme.js";
 
 export type ImportPreview = {
   title: string;
@@ -36,9 +37,6 @@ import {
 } from "../services/extension-runtime.js";
 
 export { loadSubscriptionTier, saveSubscriptionTier };
-
-const isDarkMode = (): boolean =>
-  window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? true;
 
 const isZh = (): boolean =>
   document.documentElement.lang?.startsWith("zh") ?? false;
@@ -202,16 +200,15 @@ export const showImportSuccessToast = (input: {
   toast.textContent = `草稿内容已写入，请人工复核后发布${suffix}`;
 
   const dark = isDarkMode();
-  const bg = dark ? "#2c2c2e" : "#1c1c1e";
-  const fg = dark ? "#e4e4e5" : "#ffffff";
-  const border = dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.1)";
+  const c = getImportUiTheme(dark);
   toast.style.cssText = `
     position:fixed;right:20px;bottom:20px;z-index:2147483647;
     max-width:min(400px,calc(100vw - 40px));
-    padding:12px 16px;border-radius:12px;
-    background:${bg};color:${fg};
-    font:14px/1.5 system-ui,-apple-system,sans-serif;
-    box-shadow:0 0 0 1px ${border},0 8px 28px rgba(0,0,0,.2);
+    padding:12px 16px;border-radius:14px;
+    background:${c.bg};color:${c.text};
+    border:1px solid ${c.border};
+    font:${c.font};
+    box-shadow:0 16px 48px ${c.shadow};
   `;
   document.body.appendChild(toast);
   window.setTimeout(
@@ -226,16 +223,15 @@ export const showImportError = (message: string): void => {
   toast.textContent = message.startsWith("X Article Import") ? message : `导入失败：${message}`;
 
   const dark = isDarkMode();
-  const bg = dark ? "#451a1a" : "#fef2f2";
-  const fg = dark ? "#fca5a5" : "#991b1b";
-  const border = dark ? "rgba(248,113,113,0.2)" : "rgba(220,38,38,0.15)";
+  const c = getImportUiTheme(dark);
   toast.style.cssText = `
     position:fixed;right:20px;bottom:20px;z-index:2147483647;
     max-width:min(420px,calc(100vw - 40px));
-    padding:12px 16px;border-radius:12px;
-    background:${bg};color:${fg};
-    font:14px/1.5 system-ui,-apple-system,sans-serif;
-    box-shadow:0 0 0 1px ${border},0 8px 28px rgba(0,0,0,.2);
+    padding:12px 16px;border-radius:14px;
+    background:${c.warn};color:${c.warnText};
+    border:1px solid ${c.border};
+    font:${c.font};
+    box-shadow:0 16px 48px ${c.shadow};
   `;
   document.body.appendChild(toast);
   window.setTimeout(() => toast.remove(), message.includes("刷新") ? 12_000 : 8_000);
@@ -243,18 +239,7 @@ export const showImportError = (message: string): void => {
 
 const renderDialogHtml = (preview: ImportPreview): string => {
   const dark = isDarkMode();
-  const c = {
-    bg: dark ? "#1a1a1c" : "#ffffff",
-    surface: dark ? "#242426" : "#f5f5f7",
-    text: dark ? "#e4e4e5" : "#1d1d1f",
-    muted: dark ? "#86868b" : "#6e6e73",
-    accent: dark ? "#4d9de0" : "#3b82c4",
-    accentHover: dark ? "#3d8dcc" : "#3570b0",
-    warn: dark ? "rgba(245,158,11,0.1)" : "rgba(245,158,11,0.08)",
-    warnText: dark ? "#fbbf24" : "#b45309",
-    border: dark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)",
-    shadow: dark ? "rgba(0,0,0,0.5)" : "rgba(0,0,0,0.1)",
-  };
+  const c = getImportUiTheme(dark);
 
   const hasMissing = preview.missingSources.length > 0;
   const hasCoverPreview = Boolean(preview.coverObjectUrl);
@@ -305,9 +290,9 @@ const renderDialogHtml = (preview: ImportPreview): string => {
   :host { all: initial; }
   .backdrop {
     position: fixed; inset: 0; z-index: 2147483646;
-    background: rgba(0,0,0,.35);
+    background: ${c.backdrop};
     display: grid; place-items: center;
-    font: 14px/1.5 system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    font: ${c.font};
     color: ${c.text};
     animation: yt-fade 150ms ease-out;
   }

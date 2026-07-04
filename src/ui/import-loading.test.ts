@@ -26,4 +26,17 @@ describe("import-loading", () => {
     expect(document.querySelector("[data-mts-import-loading]")).toBeNull();
     expect(document.documentElement.getAttribute("data-mts-import-busy")).toBeNull();
   });
+
+  it("uses the import dialog visual language for its overlay", () => {
+    const loading = showImportLoading("步骤一");
+    const host = document.querySelector("[data-mts-import-loading]") as HTMLElement;
+    const styleText = host.shadowRoot?.querySelector("style")?.textContent ?? "";
+
+    expect(styleText).toContain("border-radius: 14px");
+    expect(styleText).toContain("background: #1a1a1c");
+    expect(styleText).toContain("box-shadow: 0 16px 48px rgba(0,0,0,0.5)");
+    expect(styleText).toContain("border-top-color: #4d9de0");
+
+    loading.close();
+  });
 });

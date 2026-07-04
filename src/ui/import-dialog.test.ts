@@ -65,6 +65,20 @@ describe("X Articles import media policy", () => {
     expect(document.querySelector("[data-mts-import-toast]")).toBeNull();
   });
 
+  it("renders success toast with the import dialog theme", () => {
+    vi.useFakeTimers();
+    showImportSuccessToast();
+
+    const toast = document.querySelector("[data-mts-import-toast]") as HTMLElement;
+    expect(toast).toBeInstanceOf(HTMLElement);
+    expect(toast.style.borderRadius).toBe("14px");
+    expect(toast.style.background).toBe("rgb(26, 26, 28)");
+    expect(toast.style.color).toBe("rgb(228, 228, 229)");
+    expect(toast.style.boxShadow).toContain("0 16px 48px");
+
+    vi.runAllTimers();
+  });
+
   it("summarizes cover upload failures and skipped structural content", () => {
     vi.useFakeTimers();
     showImportSuccessToast({
