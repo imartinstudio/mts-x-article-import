@@ -25,7 +25,7 @@ jobs:
       - name: Pack extension zip
         run: cd dist && zip -r "../mts-x-article-import-${GITHUB_REF_NAME}.zip" .
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: mts-x-article-import-*.zip
           generate_release_notes: true
