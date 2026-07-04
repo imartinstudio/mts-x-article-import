@@ -15,6 +15,7 @@
     "noImplicitOverride": true,
     "noFallthroughCasesInSwitch": true,
     "useUnknownInCatchVariables": true,
+    "ignoreDeprecations": "6.0",
 
     "baseUrl": ".",
     "paths": {
