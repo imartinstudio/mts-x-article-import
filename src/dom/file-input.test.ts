@@ -25,7 +25,7 @@ describe("file-input", () => {
     vi.stubGlobal("chrome", { runtime: { sendMessage } });
 
     await requestMainWorldFileAssignment(
-      'input[data-yt2x-upload-target="upload"]',
+      'input[data-mts-upload-target="upload"]',
       "blob:https://x.com/upload",
       "cover.png",
       "image/png",
@@ -33,7 +33,7 @@ describe("file-input", () => {
 
     expect(sendMessage).toHaveBeenCalledWith({
       type: ASSIGN_FILE_MAIN_WORLD_MESSAGE,
-      selector: 'input[data-yt2x-upload-target="upload"]',
+      selector: 'input[data-mts-upload-target="upload"]',
       blobUrl: "blob:https://x.com/upload",
       name: "cover.png",
       mimeType: "image/png",
@@ -75,7 +75,7 @@ describe("file-input", () => {
         mimeType: "video/mp4",
       }),
     );
-    expect(action.hasAttribute("data-yt2x-upload-action")).toBe(false);
+    expect(action.hasAttribute("data-mts-upload-action")).toBe(false);
   });
 
   it("intercepts a temporary page-owned file input opened by the media button", async () => {
@@ -331,7 +331,7 @@ describe("file-input", () => {
     try {
       await expect(
         triggerFileUploadMainWorld(
-          "[data-yt2x-upload-action='removed']",
+          "[data-mts-upload-action='removed']",
           "blob:https://x.com/media",
           "clip.mp4",
           "video/mp4",

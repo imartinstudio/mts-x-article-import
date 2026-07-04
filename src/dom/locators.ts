@@ -25,7 +25,7 @@ const toButton = (node: Element): HTMLButtonElement | null => {
 };
 
 const isYt2xImportElement = (element: Element): boolean =>
-  element.id.startsWith("yt2x-import-markdown-");
+  element.id.startsWith("mts-import-markdown-");
 
 const buttonLabel = (button: HTMLButtonElement): string => {
   const labelledBy = button.getAttribute("aria-labelledby");

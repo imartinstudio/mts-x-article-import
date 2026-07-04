@@ -1,10 +1,10 @@
 export const IMPORT_BUTTON_IDS = {
-  icon: "yt2x-import-markdown-icon-btn",
-  text: "yt2x-import-markdown-text-btn",
+  icon: "mts-import-markdown-icon-btn",
+  text: "mts-import-markdown-text-btn",
 } as const;
 export const IMPORT_BUTTON_ID = IMPORT_BUTTON_IDS.text;
-const LOADING_HOST_ATTR = "data-yt2x-import-loading";
-const BUSY_ATTR = "data-yt2x-import-busy";
+const LOADING_HOST_ATTR = "data-mts-import-loading";
+const BUSY_ATTR = "data-mts-import-busy";
 
 export type ImportLoadingHandle = {
   update: (message: string) => void;
@@ -65,9 +65,9 @@ export const showImportLoading = (message: string): ImportLoadingHandle => {
     border: 3px solid #e5e7eb;
     border-top-color: #111;
     border-radius: 50%;
-    animation: yt2x-spin 0.8s linear infinite;
+    animation: mts-spin 0.8s linear infinite;
   }
-  @keyframes yt2x-spin {
+  @keyframes mts-spin {
     to { transform: rotate(360deg); }
   }
   .message {

@@ -40,7 +40,7 @@ describe("buildMainWorldWritePayload", () => {
 
     const payload = await buildMainWorldWritePayload(prepared);
 
-    expect(payload.blocks.some((block) => block.text.includes("__YT2X_"))).toBe(true);
+    expect(payload.blocks.some((block) => block.text.includes("__MTS_"))).toBe(true);
     expect(payload.plan.some((item) => item.op.type === "atomic" && item.op.entityType === "MARKDOWN")).toBe(
       true,
     );

@@ -323,7 +323,7 @@ export const buildMainWorldWritePayload = async (
 ): Promise<MainWorldWritePayload> => {
   const { adapted, parseResult, mediaRegistry } = prepared;
   const splitBlocks = splitArticleDraftBlocks(adapted.markdown, { preserveSourceContent: true });
-  const prefix = `__YT2X_${Math.random().toString(36).slice(2, 7)}_`;
+  const prefix = `__MTS_${Math.random().toString(36).slice(2, 7)}_`;
   let markerIndex = 0;
   const marker = (type: string): string => `${prefix}${type}_${markerIndex++}__`;
 

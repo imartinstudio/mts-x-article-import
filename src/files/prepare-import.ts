@@ -39,7 +39,7 @@ const materializeMermaidBlocks = async (
       throw new Error("Mermaid block was empty and cannot be converted.");
     }
     index += 1;
-    const placeholder = `yt2x-mermaid-${index}.png`;
+    const placeholder = `mts-mermaid-${index}.png`;
     const blob = await renderMermaidToPngBlob(source);
     generatedBlobs.set(placeholder, blob);
     output = output.replace(match[0]!, `![Mermaid diagram](${placeholder})`);

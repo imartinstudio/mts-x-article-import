@@ -31,12 +31,12 @@ describe("adaptArticleForX", () => {
       subscriptionTier: "premium",
     });
 
-    expect(adapted.markdown).toContain("![Table](yt2x-table-1.png)");
+    expect(adapted.markdown).toContain("![Table](mts-table-1.png)");
     expect(adapted.markdown).toContain("Mermaid diagram requires image conversion");
     expect(adapted.adaptations).toContainEqual(
       expect.objectContaining({
         kind: "premium-table",
-        placeholder: "yt2x-table-1.png",
+        placeholder: "mts-table-1.png",
       }),
     );
     expect(adapted.warnings).toHaveLength(1);

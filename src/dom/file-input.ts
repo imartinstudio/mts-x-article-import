@@ -1,7 +1,7 @@
 /** Assign files to hidden inputs in a way React-controlled X forms accept. */
 
-export const ASSIGN_FILE_MAIN_WORLD_MESSAGE = "yt2x:assign-file-main-world";
-export const TRIGGER_FILE_UPLOAD_MAIN_WORLD_MESSAGE = "yt2x:trigger-file-upload-main-world";
+export const ASSIGN_FILE_MAIN_WORLD_MESSAGE = "mts:assign-file-main-world";
+export const TRIGGER_FILE_UPLOAD_MAIN_WORLD_MESSAGE = "mts:trigger-file-upload-main-world";
 
 export type AssignFileMainWorldRequest = {
   type: typeof ASSIGN_FILE_MAIN_WORLD_MESSAGE;
@@ -220,16 +220,16 @@ export const assignFileToInput = async (input: HTMLInputElement, file: File): Pr
   const normalized = normalizeUploadFile(file);
   assignInIsolatedWorld(input, normalized);
 
-  const token = `yt2x-${Date.now().toString(36)}`;
-  input.setAttribute("data-yt2x-upload-target", token);
-  const selector = `input[type="file"][data-yt2x-upload-target="${token}"]`;
+  const token = `mts-${Date.now().toString(36)}`;
+  input.setAttribute("data-mts-upload-target", token);
+  const selector = `input[type="file"][data-mts-upload-target="${token}"]`;
   const blobUrl = URL.createObjectURL(normalized);
 
   try {
     await requestMainWorldFileAssignment(selector, blobUrl, normalized.name, normalized.type);
   } finally {
     window.setTimeout(() => URL.revokeObjectURL(blobUrl), 5_000);
-    input.removeAttribute("data-yt2x-upload-target");
+    input.removeAttribute("data-mts-upload-target");
   }
 };
 
@@ -238,9 +238,9 @@ export const uploadFileThroughAction = async (
   file: File,
 ): Promise<boolean> => {
   const normalized = normalizeUploadFile(file);
-  const token = `yt2x-action-${Date.now().toString(36)}`;
-  action.setAttribute("data-yt2x-upload-action", token);
-  const selector = `[data-yt2x-upload-action="${token}"]`;
+  const token = `mts-action-${Date.now().toString(36)}`;
+  action.setAttribute("data-mts-upload-action", token);
+  const selector = `[data-mts-upload-action="${token}"]`;
   const blobUrl = URL.createObjectURL(normalized);
   const request: TriggerFileUploadMainWorldRequest = {
     type: TRIGGER_FILE_UPLOAD_MAIN_WORLD_MESSAGE,
@@ -260,6 +260,6 @@ export const uploadFileThroughAction = async (
     return response.intercepted === true;
   } finally {
     window.setTimeout(() => URL.revokeObjectURL(blobUrl), 5_000);
-    action.removeAttribute("data-yt2x-upload-action");
+    action.removeAttribute("data-mts-upload-action");
   }
 };

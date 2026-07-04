@@ -1,18 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
- * Runs in the page MAIN world. Communicates with the yt2x content script via postMessage.
+ * Runs in the page MAIN world. Communicates with the mts content script via postMessage.
  * Inspired by Draft.js integration patterns used in X Articles import extensions.
  */
 (() => {
-  const WRITER_INSTANCE_KEY = "__YT2X_DRAFT_WRITER_V2__";
+  const WRITER_INSTANCE_KEY = "__MTS_DRAFT_WRITER_V2__";
   if ((window as unknown as Record<string, boolean | undefined>)[WRITER_INSTANCE_KEY] === true) {
     return;
   }
   (window as unknown as Record<string, boolean | undefined>)[WRITER_INSTANCE_KEY] = true;
 
-  const LOG = "[yt2x MAIN]";
-  const CHANNEL_TO_MAIN = "yt2x-content-v2";
-  const CHANNEL_FROM_MAIN = "yt2x-main-v2";
+  const LOG = "[mts MAIN]";
+  const CHANNEL_TO_MAIN = "mts-content-v2";
+  const CHANNEL_FROM_MAIN = "mts-main-v2";
   const EDITOR_SELECTOR =
     "[data-contents='true'] [contenteditable='true'], [contenteditable='true'][role='textbox'], [contenteditable='true'].public-DraftEditor-content, [contenteditable='true']";
   const MEDIA_UPLOAD_BASE_TIMEOUT_MS = 90_000;

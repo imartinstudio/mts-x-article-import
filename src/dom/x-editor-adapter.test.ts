@@ -42,7 +42,7 @@ describe("writeArticleDraftToPage", () => {
       <div contenteditable="true" id="title"></div>
       <div class="DraftEditor-root">
         <div class="public-DraftEditor-content" contenteditable="true" id="editor">
-          <div data-block="true"><div>Imported body content long enough for verification. __YT2X_test_IMAGE_0__</div></div>
+          <div data-block="true"><div>Imported body content long enough for verification. __MTS_test_IMAGE_0__</div></div>
         </div>
       </div>
     `;
@@ -59,7 +59,7 @@ describe("writeArticleDraftToPage", () => {
       blocks: [{ type: "unstyled", text: "Body", inlineStyleRanges: [], links: [] }],
       plan: [
         {
-          marker: "__YT2X_test_IMAGE_0__",
+          marker: "__MTS_test_IMAGE_0__",
           op: {
             type: "image",
             file: { token: "img_0" },
@@ -70,7 +70,7 @@ describe("writeArticleDraftToPage", () => {
       ],
       html: "<p>Body</p>",
       plain: "Body",
-      markerPrefix: "__YT2X_test_",
+      markerPrefix: "__MTS_test_",
       imageFiles: [],
     });
     mainWorldMocks.runMainWorldImport.mockResolvedValue({
@@ -121,14 +121,14 @@ describe("writeArticleDraftToPage", () => {
       expect.objectContaining({
         plan: [
           expect.objectContaining({
-            marker: "__YT2X_test_IMAGE_0__",
+            marker: "__MTS_test_IMAGE_0__",
             op: expect.objectContaining({
               type: "image",
               source: "images/scene.png",
             }),
           }),
         ],
-        markerPrefix: "__YT2X_test_",
+        markerPrefix: "__MTS_test_",
       }),
       expect.anything(),
     );
@@ -143,7 +143,7 @@ describe("writeArticleDraftToPage", () => {
       plan: [],
       html: "<p>Body</p>",
       plain: "Body",
-      markerPrefix: "__YT2X_test_",
+      markerPrefix: "__MTS_test_",
       imageFiles: [],
     });
     mainWorldMocks.runMainWorldImport.mockResolvedValue({
@@ -155,7 +155,7 @@ describe("writeArticleDraftToPage", () => {
         imageErrors: [
           {
             index: 1,
-            marker: "__YT2X_test_IMAGE_0__",
+            marker: "__MTS_test_IMAGE_0__",
             source: "images/scene.png",
             error: "Image upload failed",
           },
@@ -194,7 +194,7 @@ describe("writeArticleDraftToPage", () => {
       plan: [],
       html: "<p>Body</p>",
       plain: "Body",
-      markerPrefix: "__YT2X_test_",
+      markerPrefix: "__MTS_test_",
       imageFiles: [],
     });
     mainWorldMocks.runMainWorldImport.mockResolvedValue({
@@ -206,8 +206,8 @@ describe("writeArticleDraftToPage", () => {
         imageErrors: [
           {
             index: 1,
-            marker: "__YT2X_test_IMAGE_0__",
-            source: "yt2x-table-1.png",
+            marker: "__MTS_test_IMAGE_0__",
+            source: "mts-table-1.png",
             error: "Image placeholder was not found in the X editor",
           },
         ],
@@ -235,7 +235,7 @@ describe("writeArticleDraftToPage", () => {
     const result = await writeArticleDraftToPage(prepared);
 
     expect(result.skippedMedia).toEqual([]);
-    expect(result.manualContentMedia).toEqual(["yt2x-table-1.png"]);
+    expect(result.manualContentMedia).toEqual(["mts-table-1.png"]);
     expect(result.lastMediaError).toBeNull();
   });
 });

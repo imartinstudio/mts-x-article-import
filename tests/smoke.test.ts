@@ -27,7 +27,7 @@ describe("entry smoke", () => {
   it("main-world draft writer installs singleton and answers ready ping", async () => {
     await import("../src/main-world/draft-writer.js");
     expect(
-      (window as unknown as Record<string, boolean | undefined>)["__YT2X_DRAFT_WRITER_V2__"],
+      (window as unknown as Record<string, boolean | undefined>)["__MTS_DRAFT_WRITER_V2__"],
     ).toBe(true);
 
     const ready = await new Promise<boolean>((resolve) => {

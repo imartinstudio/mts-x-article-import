@@ -1,5 +1,5 @@
-const STORAGE_KEY = "yt2x.articleImport.subscriptionTier";
-const FALLBACK_PREFIX = "yt2x:";
+const STORAGE_KEY = "mts.articleImport.subscriptionTier";
+const FALLBACK_PREFIX = "mts:";
 
 export type XArticleSubscriptionTier = "premium" | "premium-plus";
 
@@ -55,7 +55,7 @@ export const saveSubscriptionTier = async (tier: XArticleSubscriptionTier): Prom
 };
 
 export const extensionInvalidatedUserMessage =
-  "yt2x 扩展已重新加载，当前页面上的脚本已失效。请刷新此 X Articles 页面后，再点击「导入 Markdown」。";
+  "X Article Import 扩展已重新加载，当前页面上的脚本已失效。请刷新此 X Articles 页面后，再点击「导入 Markdown」。";
 
 export const toUserFacingImportError = (error: unknown): string => {
   if (isExtensionContextInvalidated(error)) return extensionInvalidatedUserMessage;

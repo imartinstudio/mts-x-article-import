@@ -14,7 +14,7 @@ const ensureMermaid = (): void => {
 
 export const renderMermaidToPngBlob = async (source: string): Promise<Blob> => {
   ensureMermaid();
-  const id = `yt2x-mermaid-${crypto.randomUUID().replaceAll("-", "")}`;
+  const id = `mts-mermaid-${crypto.randomUUID().replaceAll("-", "")}`;
   const { svg } = await mermaid.render(id, source.trim());
   const blob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
   const url = URL.createObjectURL(blob);

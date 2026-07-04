@@ -36,7 +36,7 @@ export const adaptArticleForX = (input: {
       output.push(...tableLines);
     } else {
       tableNumber += 1;
-      const placeholder = `yt2x-table-${tableNumber}.png`;
+      const placeholder = `mts-table-${tableNumber}.png`;
       adaptations.push({
         kind: "premium-table",
         message: "Converted a Markdown table to an image because X Premium does not support native article tables.",

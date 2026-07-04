@@ -45,12 +45,12 @@ describe("x articles locators", () => {
     it("does not use the injected import icon as the create anchor", () => {
       document.body.innerHTML = `
         <nav>
-          <button id="yt2x-import-markdown-icon-btn" type="button" aria-label="新建 X Articles 草稿并导入 Markdown"></button>
+          <button id="mts-import-markdown-icon-btn" type="button" aria-label="新建 X Articles 草稿并导入 Markdown"></button>
           <button type="button" aria-label="create">+</button>
         </nav>
       `;
       const anchor = findImportIconButtonAnchor();
-      expect(anchor?.id).not.toBe("yt2x-import-markdown-icon-btn");
+      expect(anchor?.id).not.toBe("mts-import-markdown-icon-btn");
       expect(anchor?.getAttribute("aria-label")).toBe("create");
     });
   });
@@ -150,9 +150,9 @@ describe("x articles locators", () => {
     it("finds the link-style empty-state write control used by X", () => {
       document.body.innerHTML = `
         <main>
-          <div data-yt2x-import-pair="text">
+          <div data-mts-import-pair="text">
             <a href="/compose/articles" role="link">撰写</a>
-            <button id="yt2x-import-markdown-text-btn" type="button">导入</button>
+            <button id="mts-import-markdown-text-btn" type="button">导入</button>
           </div>
         </main>
       `;

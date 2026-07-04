@@ -58,11 +58,11 @@ describe("X Articles import media policy", () => {
       filteredVideos: ["media/clip.mp4"],
     });
 
-    const text = document.querySelector("[data-yt2x-import-toast]")?.textContent ?? "";
+    const text = document.querySelector("[data-mts-import-toast]")?.textContent ?? "";
     expect(text).toContain("1 个正文图片未自动插入，请手动补充");
     expect(text).toContain("1 个视频已过滤");
     vi.runAllTimers();
-    expect(document.querySelector("[data-yt2x-import-toast]")).toBeNull();
+    expect(document.querySelector("[data-mts-import-toast]")).toBeNull();
   });
 
   it("summarizes cover upload failures and skipped structural content", () => {
@@ -74,12 +74,12 @@ describe("X Articles import media policy", () => {
       lastMediaError: "upload failed",
     });
 
-    const text = document.querySelector("[data-yt2x-import-toast]")?.textContent ?? "";
+    const text = document.querySelector("[data-mts-import-toast]")?.textContent ?? "";
     expect(text).toContain("2 处分割线未插入");
     expect(text).toContain("1 个素材上传失败，正文格式已保留：upload failed");
     expect(text).toContain("1 段英文 prompt 代码块已跳过");
     vi.runAllTimers();
-    expect(document.querySelector("[data-yt2x-import-toast]")).toBeNull();
+    expect(document.querySelector("[data-mts-import-toast]")).toBeNull();
   });
 
   it("builds preview state from a prepared import and checks missing cover and image sources", () => {
@@ -123,7 +123,7 @@ describe("X Articles import media policy", () => {
       warnings: ["Careful <warning>"],
       missingSources: ["cover.png", "images/body.png"],
     });
-    const host = document.querySelector("[data-yt2x-import-dialog]") as HTMLElement;
+    const host = document.querySelector("[data-mts-import-dialog]") as HTMLElement;
     const shadow = host.shadowRoot!;
 
     expect(shadow.textContent).toContain("cover.png");
@@ -150,7 +150,7 @@ describe("X Articles import media policy", () => {
       warnings: [],
       missingSources: ["images/body.png"],
     });
-    const host = document.querySelector("[data-yt2x-import-dialog]") as HTMLElement;
+    const host = document.querySelector("[data-mts-import-dialog]") as HTMLElement;
     const shadow = host.shadowRoot!;
 
     const rows = [...shadow.querySelectorAll<HTMLElement>(".media-item")].map((row) => ({
@@ -176,7 +176,7 @@ describe("X Articles import media policy", () => {
       warnings: [],
       missingSources: [],
     });
-    const host = document.querySelector("[data-yt2x-import-dialog]") as HTMLElement;
+    const host = document.querySelector("[data-mts-import-dialog]") as HTMLElement;
     const shadow = host.shadowRoot!;
     const premiumPlusRadio = shadow.querySelector<HTMLInputElement>("[name='subscription-tier'][value='premium-plus']");
     premiumPlusRadio!.checked = true;
@@ -193,11 +193,11 @@ describe("X Articles import media policy", () => {
     vi.useFakeTimers();
     showImportError("请刷新页面后重试");
 
-    const toast = document.querySelector("[data-yt2x-import-error]");
-    expect(toast?.textContent).toBe("yt2x 导入失败：请刷新页面后重试");
+    const toast = document.querySelector("[data-mts-import-error]");
+    expect(toast?.textContent).toBe("导入失败：请刷新页面后重试");
     vi.advanceTimersByTime(11_999);
-    expect(document.querySelector("[data-yt2x-import-error]")).not.toBeNull();
+    expect(document.querySelector("[data-mts-import-error]")).not.toBeNull();
     vi.advanceTimersByTime(1);
-    expect(document.querySelector("[data-yt2x-import-error]")).toBeNull();
+    expect(document.querySelector("[data-mts-import-error]")).toBeNull();
   });
 });

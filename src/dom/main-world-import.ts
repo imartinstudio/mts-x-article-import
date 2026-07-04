@@ -3,7 +3,7 @@ import type { MainWorldWritePayload } from "../import/markdown-to-draft-payload.
 import { CHANNEL_FROM_MAIN, CHANNEL_TO_MAIN } from "../utils/main-world-messages.js";
 
 /** Must match `INJECT_DRAFT_WRITER_MESSAGE` in shared/main-world-messages.ts (local binding for sendMessage). */
-const INJECT_DRAFT_WRITER_REQUEST = "yt2x:inject-draft-writer" as const;
+const INJECT_DRAFT_WRITER_REQUEST = "mts:inject-draft-writer" as const;
 
 type MainWorldSummary = {
   atomicOk: number;
@@ -48,7 +48,7 @@ const ensureMainWorldWriter = async (): Promise<void> => {
     | { ok?: boolean; error?: string }
     | undefined;
   if (response?.ok !== true) {
-    throw new Error(response?.error ?? "Failed to inject the yt2x MAIN world draft writer.");
+    throw new Error(response?.error ?? "Failed to inject the mts MAIN world draft writer.");
   }
 
   const deadline = Date.now() + 5_000;
@@ -56,7 +56,7 @@ const ensureMainWorldWriter = async (): Promise<void> => {
     if (await pingMainWorld()) return;
     await wait(120);
   }
-  throw new Error("yt2x MAIN world draft writer did not become ready.");
+  throw new Error("mts MAIN world draft writer did not become ready.");
 };
 
 export const runMainWorldImport = async (

@@ -40,7 +40,7 @@ import {
   type ImportButtonVariant,
 } from "../ui/import-button-style.js";
 
-const MOUNT_ATTR = "data-yt2x-import-mounted";
+const MOUNT_ATTR = "data-mts-import-mounted";
 const ARTICLE_PATH_PREFIX = "/compose/articles";
 
 type ImportMode = "new-draft" | "current-draft";

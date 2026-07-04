@@ -79,7 +79,7 @@ export const showImportPreviewDialog = (
 ): Promise<ImportDialogResult> =>
   new Promise((resolve) => {
     const host = document.createElement("div");
-    host.setAttribute("data-yt2x-import-dialog", "true");
+    host.setAttribute("data-mts-import-dialog", "true");
     const shadow = host.attachShadow({ mode: "open" });
 
     let currentPreview = preview;
@@ -179,7 +179,7 @@ export const showImportSuccessToast = (input: {
   const manualContentMedia = input.manualContentMedia ?? [];
   const filteredVideos = input.filteredVideos ?? [];
   const toast = document.createElement("div");
-  toast.setAttribute("data-yt2x-import-toast", "true");
+  toast.setAttribute("data-mts-import-toast", "true");
   const notes: string[] = [];
   if (skippedDividers.length > 0) {
     notes.push(`${skippedDividers.length} 处分割线未插入，请手动补 Divider`);
@@ -222,8 +222,8 @@ export const showImportSuccessToast = (input: {
 
 export const showImportError = (message: string): void => {
   const toast = document.createElement("div");
-  toast.setAttribute("data-yt2x-import-error", "true");
-  toast.textContent = message.startsWith("yt2x") ? message : `yt2x 导入失败：${message}`;
+  toast.setAttribute("data-mts-import-error", "true");
+  toast.textContent = message.startsWith("X Article Import") ? message : `导入失败：${message}`;
 
   const dark = isDarkMode();
   const bg = dark ? "#451a1a" : "#fef2f2";
