@@ -3,4 +3,5 @@ node_modules/
 dist/
 coverage/
 *.tsbuildinfo
+*.zip
 .DS_Store

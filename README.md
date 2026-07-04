@@ -27,6 +27,8 @@ src/
   background/  MV3 service worker（MAIN world 注入桥）
   main-world/  MAIN world 草稿写入器
 tests/         smoke 测试
+privacy/       隐私政策页面（随构建打包）
+screenshots/   Chrome 商店截图 demo 与推广图
 ```
 
 ## 开发
@@ -43,4 +45,4 @@ pnpm test:smoke    # 入口 smoke 测试 + dist 产物校验
 
 ## 发布
 
-维护者打 tag 后，GitHub Actions 会自动构建并发布扩展 zip（见 [CONTRIBUTING.md](CONTRIBUTING.md)）。
+维护者打 tag 后，GitHub Actions 会自动构建并发布扩展 zip（见 [CONTRIBUTING.md](CONTRIBUTING.md)）。商店文案与截图说明见 [STORE_LISTING.md](STORE_LISTING.md)。

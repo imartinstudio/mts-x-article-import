@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>X Article Import — Store Screenshot Demo</title>
+    <style>
+      :root {
+        --bg: #000;
+        --panel: #16181c;
+        --border: #2f3336;
+        --text: #e7e9ea;
+        --muted: #71767b;
+        --accent: #1d9bf0;
+        --success: #00ba7c;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 24px 16px 96px;
+      }
+      .toolbar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        flex-wrap: wrap;
+        padding: 12px;
+        background: rgba(0, 0, 0, 0.92);
+        border-top: 1px solid var(--border);
+        z-index: 100;
+      }
+      .toolbar button {
+        border: 1px solid var(--border);
+        background: var(--panel);
+        color: var(--text);
+        border-radius: 999px;
+        padding: 8px 14px;
+        cursor: pointer;
+        font-size: 13px;
+      }
+      .toolbar button.active {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+      .frame {
+        width: min(920px, 100%);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        overflow: hidden;
+        background: var(--bg);
+        position: relative;
+        min-height: 560px;
+      }
+      .topbar {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--border);
+      }
+      .topbar img {
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+      }
+      .topbar h1 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 700;
+      }
+      .editor {
+        padding: 20px 24px 40px;
+      }
+      .title-field {
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 16px;
+        color: var(--text);
+      }
+      .body-field {
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.6;
+        min-height: 120px;
+      }
+      .import-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-left: auto;
+        padding: 8px 14px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: #fff;
+        color: #0f1419;
+        font-weight: 600;
+        font-size: 14px;
+      }
+      .overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.55);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+      .dialog,
+      .loading,
+      .toast {
+        display: none;
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        width: min(480px, 100%);
+        box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45);
+      }
+      .dialog {
+        padding: 20px;
+      }
+      .dialog h2 {
+        margin: 0 0 12px;
+        font-size: 18px;
+      }
+      .meta {
+        font-size: 13px;
+        color: var(--muted);
+        margin: 8px 0;
+      }
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 12px 0;
+      }
+      .chip {
+        font-size: 12px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: #202327;
+        border: 1px solid var(--border);
+      }
+      .actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        margin-top: 16px;
+      }
+      .actions button {
+        border-radius: 999px;
+        padding: 8px 16px;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--text);
+      }
+      .actions .primary {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #fff;
+        font-weight: 600;
+      }
+      .loading {
+        padding: 24px;
+        text-align: center;
+      }
+      .spinner {
+        width: 36px;
+        height: 36px;
+        border: 3px solid var(--border);
+        border-top-color: var(--accent);
+        border-radius: 50%;
+        margin: 0 auto 12px;
+        animation: spin 0.8s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .toast {
+        position: absolute;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 12px 18px;
+        background: #16181c;
+        border-color: var(--success);
+        color: var(--success);
+        font-size: 14px;
+        width: auto;
+        white-space: nowrap;
+      }
+      body[data-state="preview"] .overlay,
+      body[data-state="loading"] .overlay,
+      body[data-state="complete"] .overlay {
+        display: flex;
+      }
+      body[data-state="preview"] .dialog {
+        display: block;
+      }
+      body[data-state="loading"] .loading {
+        display: block;
+      }
+      body[data-state="complete"] .toast {
+        display: block;
+      }
+    </style>
+  </head>
+  <body data-state="entry">
+    <div class="frame">
+      <div class="topbar">
+        <img src="../src/icons/icon-32.png" alt="" />
+        <h1>X Article Import</h1>
+        <span class="import-btn">导入 Markdown</span>
+      </div>
+      <div class="editor">
+        <div class="title-field">用 AI 重构前端工作流</div>
+        <div class="body-field">在此开始撰写你的 X Article…</div>
+      </div>
+      <div class="overlay">
+        <div class="dialog">
+          <h2>导入预览</h2>
+          <div class="meta">标题：用 AI 重构前端工作流</div>
+          <div class="meta">封面：cover.png · 正文图片 3 · 代码块 2</div>
+          <div class="chips">
+            <span class="chip">Premium 表格 → 图片</span>
+            <span class="chip">Mermaid 待转图</span>
+          </div>
+          <div class="actions">
+            <button type="button">取消</button>
+            <button type="button" class="primary">确认导入</button>
+          </div>
+        </div>
+        <div class="loading">
+          <div class="spinner"></div>
+          <div>正在上传图片 2/3…</div>
+        </div>
+        <div class="toast">✓ 导入完成 · 已写入标题与正文</div>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <button type="button" data-state="entry" class="active">1 编辑器入口</button>
+      <button type="button" data-state="preview">2 预览对话框</button>
+      <button type="button" data-state="loading">3 导入进度</button>
+      <button type="button" data-state="complete">4 完成提示</button>
+    </div>
+
+    <script>
+      const buttons = document.querySelectorAll("[data-state]");
+      const setState = (state) => {
+        document.body.dataset.state = state;
+        buttons.forEach((btn) => btn.classList.toggle("active", btn.dataset.state === state));
+      };
+      buttons.forEach((btn) => btn.addEventListener("click", () => setState(btn.dataset.state)));
+    </script>
+  </body>
+</html>
