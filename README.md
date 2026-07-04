@@ -1,8 +1,8 @@
 # mts-x-article-import
 
-独立的 Chrome MV3 扩展项目：将本地 Markdown 文件导入 X (Twitter) Articles 草稿编辑器。
+**X Article Import** — 独立的 Chrome MV3 扩展：将本地 Markdown 文件导入 X (Twitter) Articles 草稿编辑器。
 
-由 yt2x monorepo 中的 `x-article-extension` 模块迁移而来，零 monorepo 运行时依赖。
+从内部 monorepo 拆分独立维护，零外部运行时依赖。许可证：[MIT](LICENSE)
 
 ## 功能
 
@@ -40,3 +40,7 @@ pnpm test:smoke    # 入口 smoke 测试 + dist 产物校验
 ```
 
 构建后在 Chrome `chrome://extensions` 中「加载已解压的扩展程序」选择 `dist/` 目录。
+
+## 发布
+
+维护者打 tag 后，GitHub Actions 会自动构建并发布扩展 zip（见 [CONTRIBUTING.md](CONTRIBUTING.md)）。
