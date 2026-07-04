@@ -31,6 +31,6 @@ git tag v0.2.0
 git push origin v0.2.0
 ```
 
-## 许可证
+## 许可证与安全
 
-贡献即表示同意以 [MIT](LICENSE) 许可发布。
+贡献即表示同意以 [MIT](LICENSE) 许可发布。安全漏洞请阅读 [SECURITY.md](SECURITY.md)，勿在公开 Issue 中披露。

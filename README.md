@@ -1,5 +1,9 @@
 # mts-x-article-import
 
+[![CI](https://github.com/imartinstudio/mts-x-article-import/actions/workflows/ci.yml/badge.svg)](https://github.com/imartinstudio/mts-x-article-import/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/github/license/imartinstudio/mts-x-article-import)](LICENSE)
+[![Release](https://img.shields.io/github/v/release/imartinstudio/mts-x-article-import)](https://github.com/imartinstudio/mts-x-article-import/releases)
+
 **X Article Import** — 独立的 Chrome MV3 扩展：将本地 Markdown 文件导入 X (Twitter) Articles 草稿编辑器。
 
 从内部 monorepo 拆分独立维护，零外部运行时依赖。许可证：[MIT](LICENSE)
