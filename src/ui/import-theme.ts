@@ -14,7 +14,28 @@ export type ImportUiTheme = {
 };
 
 export const isDarkMode = (): boolean =>
-  window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? true;
+  detectPageDarkMode() ?? window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? true;
+
+const detectPageDarkMode = (): boolean | null => {
+  const colorScheme = getComputedStyle(document.documentElement).colorScheme;
+  if (/\bdark\b/i.test(colorScheme)) return true;
+  if (/\blight\b/i.test(colorScheme)) return false;
+
+  const bodyBackground = getComputedStyle(document.body).backgroundColor;
+  return backgroundIsDark(bodyBackground);
+};
+
+const backgroundIsDark = (color: string): boolean | null => {
+  const rgb = color.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/i);
+  if (rgb === null) return null;
+  const alpha = rgb[4] === undefined ? 1 : Number(rgb[4]);
+  if (alpha < 0.5) return null;
+
+  const red = Number(rgb[1]);
+  const green = Number(rgb[2]);
+  const blue = Number(rgb[3]);
+  return red * 0.299 + green * 0.587 + blue * 0.114 < 128;
+};
 
 export const getImportUiTheme = (dark = isDarkMode()): ImportUiTheme => ({
   bg: dark ? "#1a1a1c" : "#ffffff",

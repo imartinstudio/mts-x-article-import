@@ -299,7 +299,7 @@ const renderDialogHtml = (preview: ImportPreview): string => {
   @keyframes yt-fade { from { opacity: 0; } to { opacity: 1; } }
 
   .panel {
-    width: min(480px, calc(100vw - 32px));
+    width: min(640px, calc(100vw - 32px));
     max-height: calc(100vh - 48px);
     overflow-y: auto;
     background: ${c.bg};
@@ -315,14 +315,14 @@ const renderDialogHtml = (preview: ImportPreview): string => {
   }
 
   .cover-preview {
-    aspect-ratio: 2/1;
+    aspect-ratio: 5/2;
     overflow: hidden;
     background: ${c.surface};
     border-radius: 14px 14px 0 0;
     flex-shrink: 0;
   }
   .cover-preview img {
-    width: 100%; height: 100%; object-fit: cover;
+    width: 100%; height: 100%; object-fit: contain;
     display: block;
   }
 
