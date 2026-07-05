@@ -5,6 +5,7 @@ describe("import-loading", () => {
   afterEach(() => {
     document.querySelector("[data-mts-import-loading]")?.remove();
     document.documentElement.removeAttribute("data-mts-import-busy");
+    document.body.style.backgroundColor = "";
   });
 
   it("formats indexed step labels", () => {
@@ -28,6 +29,12 @@ describe("import-loading", () => {
   });
 
   it("uses the import dialog visual language for its overlay", () => {
+    Object.defineProperty(window, "matchMedia", {
+      configurable: true,
+      value: () => ({ matches: false }),
+    });
+    document.body.style.backgroundColor = "rgb(0, 0, 0)";
+
     const loading = showImportLoading("步骤一");
     const host = document.querySelector("[data-mts-import-loading]") as HTMLElement;
     const styleText = host.shadowRoot?.querySelector("style")?.textContent ?? "";
