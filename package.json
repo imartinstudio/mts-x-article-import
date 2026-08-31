@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "mermaid": "^11.6.0",
-    "zod": "^4.4.3"
+    "zod": "^4.5.1"
   },
   "devDependencies": {
     "@types/chrome": "^0.2.2",
